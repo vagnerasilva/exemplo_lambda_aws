@@ -1,7 +1,7 @@
 import logging
 import os
 from http import HTTPStatus
-
+from app import processor
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -11,18 +11,6 @@ VALUE_GLOBAL = "VALOR_GLOBAL"
 
 
 def lambda_handler(event, context):
-    try:
-        logger.info(f'Entrada do handler da lambda {VALUE_GLOBAL} ')
-        value = ""
-        logger.info('Retorno da chamada {}, retornado output ...'.format(len(value))) # noqa E501
+    response = processor.lambda_processor(event, context)
 
-    except Exception as e:  # Catch all for easier error tracing in logs
-        logger.error(e, exc_info=True)
-        raise Exception('Error durante execucao')  # notify aws of failure
-
-    return {
-        "statusCode": HTTPStatus.OK.value
-    }
-
-
-print(lambda_handler("", ""))
+    return response
